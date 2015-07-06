@@ -3,22 +3,22 @@ package main;
 public class Number2Word {
 	public static final String JEDNA = "jedna";
 	public static final String DVA = "dva";
-	public static final String DVE = "dvì";
-	public static final String TRI = "tøi";
-	public static final String CTYRI = "ètyøi";
-	public static final String PET = "pìt";
-	public static final String SEST = "šest";
+	public static final String DVE = "dvÄ›";
+	public static final String TRI = "tÅ™i";
+	public static final String CTYRI = "ÄtyÅ™i";
+	public static final String PET = "pÄ›t";
+	public static final String SEST = "Å¡est";
 	public static final String SEDM = "sedm";
 	public static final String OSM = "osm";
-	public static final String DEVET = "devìt";
+	public static final String DEVET = "devÄ›t";
 
 	public static final String KORUNA = "koruna";
 	public static final String KORUNY = "koruny";
 	public static final String KORUN = "korun";
 
-	public static final String HALER = "haléø";
-	public static final String HALERU = "haléøù";
-	public static final String HALERE = "haléøe";
+	public static final String HALER = "halÃ©Å™";
+	public static final String HALERU = "halÃ©Å™Å¯";
+	public static final String HALERE = "halÃ©Å™e";
 
 	public static String OneDigit2Word(int number, int row) {
 		String word = "";
