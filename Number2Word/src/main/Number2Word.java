@@ -818,7 +818,64 @@ public class Number2Word {
 
     public static String Number2CzechWord(String number, int iType, int iLetter, boolean financial, int currency) {
         String result = "";
+        /*
+         *  ' Význam parametrov:
+        ' sCislo$ - prevádzané číslo ako reťazec
+        ' iTyp% - 0 – celé – štandardná hodnota, ak je na vstupe celé číslo
+        '         1 – reálne – štandardná hodnota, ak je na vstupe reálne číslo
+        '         2 - reálne - xx/100
+        '         3 - iba desatinná časť
+        '         4 a viac - iba desatinná časť v tvare xx/100 (ďalšie parametre - iPismeno, iSpolu a iMena nemajú v tomto prípade význam)
+        ' iPismeno% - 0 – prvé písmeno malé – štandardná hodnota
+        '             1 a viac – prvé písmeno veľké
+        ' iSpolu% - 0 – s medzerami – štandardná hodnota (Sto padesát)
+        '           1 – bez medzier (Stopadesát)
+        '           2 - s medzerami finančne (Jednosto padesát)
+        '           3 a viac - bez medzier finančne (Jendostopadesát)
+        ' iMena% - 0 – žiadna – štandardná hodnota
+        '          1 – celých, desetin (slovo desetin sa použije, ak iTyp<>xx/100)
+        '          2 – euro, centy (slovo centy sa použije, ak iTyp<>xx/100)
+        '          3 a viac – koruny, haléře (slovo haléře sa použije, ak iTyp<>xx/100)
+         */
 
+        int iRowTenth; //iRadD: 1 - desetin, 2 - stotin, 3 - tisícin... (podľa počtu cifier v desatinnej časti)
+        String integer = "";// Pomocná premenná pre prevod celej časti
+        String tenth = ""; // Pomocná premenná na prevod desatinnej časti
+        // ' Pretože vstupné parametre sú optional, vo funkcii sa používajú vnútorné premenné
+        //' ktoré sa nastavia podľa parametrov, ak sú zadané, inak nastavíme štandardné hodnoty
+        int ipType = 0;
+
+        int iInt = 0, iTenth = 0;
+
+        iRowTenth = 0; //TODO Cela_Desatinna(sCislo, iCela, iDesatinna)
+
+        if (iRowTenth > 0)
+            iType = 1; //Je to reálne číslo (nenulový počet desatinných cifier)
+        if (iRowTenth == 0)
+            iRowTenth = 1; //Ak bolo zadané celé číslo, musíme zadať, že je jedno desatinné číslo (nula) pre prípad, že budeme prevádzať desatinnú časť
+        
+        //Ak sú parametre zadané, nastavíme vnútorné premenné podľa nich
+        
+        switch (ipType) {
+        case 0: 
+            integer = convert2Word(iInt, iLetter, financial, currency, 0);
+            break;
+        case 1:
+            integer = convert2Word(iInt, iLetter, financial, currency, 0);
+            //Prevod desatinnej časti má význam iba vtedy, ak je zadaná mena
+            if (currency>0) tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
+            break;
+        case 2:
+            integer = convert2Word(iInt, iLetter, financial, currency, 0);
+            tenth = (tenth + String.valueOf(iTenth) + "/" + String.valueOf(10^iRowTenth)).trim();
+            break;
+        case 3: 
+            tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
+            default:
+                tenth = (String.valueOf(iTenth) + "/"+ String.valueOf(10^iRowTenth)).trim();
+        }
+        
+        result = (result + tenth).trim();
         return result;
     }
 
