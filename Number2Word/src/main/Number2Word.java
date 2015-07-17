@@ -29,6 +29,8 @@ public class Number2Word {
     public static final String PADESAT = "padesát";
     public static final String SEDESAT = "šedesát";
     public static final String DEVADESAT = "devadesát";
+    public static final String DESAT = "desát";
+    
 
     public static final String KORUNA = "koruna";
     public static final String KORUNY = "koruny";
@@ -153,6 +155,8 @@ public class Number2Word {
         case 9:
             word = DEVET;
             break;
+        case 0:
+            break;
         default:
             System.out.println("Unsupported parameter");
             break;
@@ -272,6 +276,7 @@ public class Number2Word {
         case 3:
         case 4:
             result = OneDigit2Word(iTens, 0) + CET;
+            break;
         case 5:
             result = PADESAT;
             break;
@@ -280,7 +285,7 @@ public class Number2Word {
             break;
         case 7:
         case 8:
-            result = OneDigit2Word(iTens, 0);
+            result = OneDigit2Word(iTens, 0) + DESAT;
             break;
         case 9:
             result = DEVADESAT;
@@ -309,7 +314,7 @@ public class Number2Word {
 
         int iUnits = iNumber % 10; // z čísla vypreparujeme číslice na mieste
                                    // jednotiek,
-        int iTens = (int) Math.floor(iNumber / 10); // desiatok
+        int iTens = (int) Math.floor(iNumber / 10) % 10; // desiatok
         int iHundreds = (int) Math.floor(iNumber / 100); // hundreds
 
         // Najprv prevedieme na text jednotky a desiatky (číslo 0 až 99)
@@ -349,6 +354,8 @@ public class Number2Word {
         case 8:
         case 9:
             resultHundreds = SET;
+            break;
+        case 0: 
             break;
         default:
             System.out.println("Wrong number");
@@ -731,6 +738,7 @@ public class Number2Word {
                     break;
                 default: // TODO
                 }
+                break;
             case 2: // euro
                 currency = inflectEuros(iInflectNumber);
                 switch (iInflectNumber) {
@@ -743,6 +751,7 @@ public class Number2Word {
                 default: // TODO
 
                 }
+                break;
             default: // crowns
                 currency = inflectCrown(iInflectNumber);
                 switch (iInflectNumber) {
@@ -806,7 +815,7 @@ public class Number2Word {
 
         }
 
-        result = (result + currency).trim();
+        result = (result + " " + currency).trim();
         return result;
     }
 
@@ -816,7 +825,7 @@ public class Number2Word {
      * REM Napr. ak chce niekto zadať parameter iSpolu, musí zadať aj predchádzajúce parametre iTyp a iPismeno, nasledujúci parameter iMena zadať nemusí.
      */
 
-    public static String Number2CzechWord(String number, int iType, int iLetter, boolean financial, int currency) {
+    public static String number2CzechWord(String number, int iType, int iLetter, boolean financial, int currency) {
         String result = "";
         /*
          *  ' Význam parametrov:
@@ -847,36 +856,96 @@ public class Number2Word {
 
         int iInt = 0, iTenth = 0;
 
-        iRowTenth = 0; //TODO Cela_Desatinna(sCislo, iCela, iDesatinna)
+        iRowTenth = integerTenth(number, 0, 0); //TODO Cela_Desatinna(sCislo, iCela, iDesatinna)
+        
 
         if (iRowTenth > 0)
             iType = 1; //Je to reálne číslo (nenulový počet desatinných cifier)
         if (iRowTenth == 0)
             iRowTenth = 1; //Ak bolo zadané celé číslo, musíme zadať, že je jedno desatinné číslo (nula) pre prípad, že budeme prevádzať desatinnú časť
-        
+
         //Ak sú parametre zadané, nastavíme vnútorné premenné podľa nich
-        
+
         switch (ipType) {
-        case 0: 
+        case 0:
             integer = convert2Word(iInt, iLetter, financial, currency, 0);
             break;
         case 1:
             integer = convert2Word(iInt, iLetter, financial, currency, 0);
             //Prevod desatinnej časti má význam iba vtedy, ak je zadaná mena
-            if (currency>0) tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
+            if (currency > 0)
+                tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
             break;
         case 2:
             integer = convert2Word(iInt, iLetter, financial, currency, 0);
-            tenth = (tenth + String.valueOf(iTenth) + "/" + String.valueOf(10^iRowTenth)).trim();
+            tenth = (tenth + String.valueOf(iTenth) + "/" + String.valueOf(10 ^ iRowTenth)).trim();
             break;
-        case 3: 
+        case 3:
             tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
-            default:
-                tenth = (String.valueOf(iTenth) + "/"+ String.valueOf(10^iRowTenth)).trim();
+        default:
+            tenth = (String.valueOf(iTenth) + "/" + String.valueOf(10 ^ iRowTenth)).trim();
         }
-        
+
         result = (result + tenth).trim();
         return result;
+    }
+
+    /**
+     * REM Funkcia pre zistenie celej a desatinnej časti čísla
+     * REM Funkcia vracia počet cifier desatinnej časti (lebo .5 je 5/10 ale .05 je 5/100)
+     * @param number
+     * @param iInt
+     * @param iTenth
+     * @return
+     */
+    public static int integerTenth(String number, int iInt, int iTenth) {
+        String numbers = "0123456789,.";
+        String result = "";
+        int iResult;
+        char character;
+        int where;
+
+        //Vymazanie všetkých znakov okrem čísla a desatinnej čiarky/bodky z reťazca sumy
+        for (int i = 0; i < number.length(); i++) {
+            //character = lastSubstring(number, i, 0);
+            character = number.charAt(i);
+            if (numbers.indexOf(character) != -1) {
+                result = result + character;
+            }
+        }
+        // ' Vyhľadanie desatinnej čiarky
+        where = result.indexOf(",");
+        if (where == -1)
+            where = result.indexOf(".");
+
+        // ' Predpokladáme, že reťazec je prázdny - vtedy je číslo nula a počet desatinných cifier nulový
+        iInt = 0;
+        iTenth = 0;
+        iResult = 0;
+
+        if (where > 0) {
+            //' Je zadaná desatinná čiarka/bodka - reálne číslo
+            //Celá časť prevedená na číslo
+            if (result.length() != 0)
+                iInt = Integer.valueOf(result.substring(0, where-1));
+            //Zistenie polohy desatinnej časti. Číslo môže byť zadané napr. "3.", vtedy sa bude považovať za celé
+            //where = result.length() - where;
+            //
+            if (where > 0) {
+                //Desatinná časť nie je prázdna
+                //result = result.substring(0, 9);
+                result = result.substring(where -1 , result.length());
+                //trim result to only 9 numbers to fit into integer
+                if (result.length() > 9)
+                    result = result.substring(0, 9);
+                if (result.length() != 0)
+                    iTenth = Integer.parseInt(result);
+                iResult = String.valueOf(iTenth).length();
+            }
+
+        }
+
+        return iResult;
     }
 
 }
