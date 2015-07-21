@@ -1,4 +1,3 @@
-REM Funkcia pre zistenie celej a desatinnej časti čísla
 REM Funkcia vracia počet cifier desatinnej časti (lebo .5 je 5/10 ale .05 je 5/100)
 function Cela_Desatinna(sCislo$, iCela&, iDesatinna&) as integer
  dim sCisla$ : sCisla="0123456789,." ' Definícia čísiel a desatinnej čiarky/bodky

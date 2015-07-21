@@ -1,5 +1,7 @@
 package main;
 
+import utils.Utils;
+
 public class Number2Word {
     public static final String JEDNO = "jedno";
     public static final String JEDEN = "jeden";
@@ -30,7 +32,6 @@ public class Number2Word {
     public static final String SEDESAT = "šedesát";
     public static final String DEVADESAT = "devadesát";
     public static final String DESAT = "desát";
-    
 
     public static final String KORUNA = "koruna";
     public static final String KORUNY = "koruny";
@@ -88,7 +89,7 @@ public class Number2Word {
      * @param iRow
      * @return
      */
-    public static String OneDigit2Word(int iNumber, int iRow) {
+    private static String OneDigit2Word(int iNumber, int iRow) {
         String word = "";
         switch (iNumber) {
         case 1:
@@ -165,7 +166,7 @@ public class Number2Word {
         return word;
     }
 
-    public static String inflectHeller(int iNumber) {
+    private static String inflectHeller(int iNumber) {
         String word = "";
         switch (iNumber) {
         case 1:
@@ -197,7 +198,7 @@ public class Number2Word {
      * @param iNumber
      * @return
      */
-    public static String inflectCrown(int iNumber) {
+    private static String inflectCrown(int iNumber) {
         String word = "";
         switch (iNumber) {
         case 1:
@@ -217,7 +218,9 @@ public class Number2Word {
             word = KORUN;
             break;
         default:
-            System.out.println("Invalid number");
+            //TODO
+            //System.out.println("Invalid number");
+            word = KORUN;
             break;
         }
         return word;
@@ -231,7 +234,7 @@ public class Number2Word {
      * @param financial
      * @return
      */
-    public static String tens2Word(int iUnits, int iTens, boolean financial) {
+    private static String tens2Word(int iUnits, int iTens, boolean financial) {
         String result = "";
         String units;
         switch (iTens) {
@@ -307,7 +310,7 @@ public class Number2Word {
     /**
      * REM Funkcia na prevod čísiel 1-999 na reťazec
      */
-    public static String hundreds2Word(int iNumber, int iRow, boolean financial) {
+    private static String hundreds2Word(int iNumber, int iRow, boolean financial) {
         String result = "";
         String resultHundreds = "";
         String hundreds_c;
@@ -355,7 +358,7 @@ public class Number2Word {
         case 9:
             resultHundreds = SET;
             break;
-        case 0: 
+        case 0:
             break;
         default:
             System.out.println("Wrong number");
@@ -386,7 +389,7 @@ public class Number2Word {
     /**
      * Funkcia na zistenie rádových prípon
      */
-    public static String rows2Word(int iNumber, int iRow, boolean financial) {
+    private static String rows2Word(int iNumber, int iRow, boolean financial) {
 
         // ' Texty o biliónoch, ... sú teoretické, pretože premenná typu LONG je
         // maximálne 2.147.483.647, t.j.
@@ -399,6 +402,13 @@ public class Number2Word {
         switch (iRow) {
         case 1:
             switch (iNumber) {
+
+            case 2:
+            case 3:
+            case 4:
+                prefix = TISICE;
+                break;
+            case 0:
             case 1:
             case 5:
             case 6:
@@ -407,13 +417,11 @@ public class Number2Word {
             case 9:
                 prefix = TISIC;
                 break;
-            case 2:
-            case 3:
-            case 4:
-                prefix = TISICE;
-                break;
             default:
-                System.out.println("Wrong iNumber number");
+                //TODO
+                //System.out.println("Wrong iNumber number");
+                prefix = TISIC;
+                break;
             }
             break;
         case 2:
@@ -434,36 +442,21 @@ public class Number2Word {
             break;
         }
 
-        if (iRow == 1) {
+        if (iRow == 1) { //thousands
             switch (iNumber) {
             case 0:
                 howMany = "";
                 break;
-            case 1:
-                howMany = prefix + LION;
-                break;
-            case 2:
-            case 3:
-            case 4:
-                howMany = prefix + LIONY;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                howMany = prefix + LIONU;
-                break;
             default:
-                System.out.println("Wrong iNumber");
+                howMany = prefix;
             }
         } else {
-            // lióny – milión, bilióny, triliónov
             if ((iRow % 2) == 0) {
                 switch (iNumber) {
                 case 0:
                     howMany = "";
                     break;
+
                 case 1:
                     howMany = prefix + LION;
                     break;
@@ -480,32 +473,61 @@ public class Number2Word {
                     howMany = prefix + LIONU;
                     break;
                 default:
-                    System.out.println("Wrong iNumber");
-
+                    //TODO
+                    //System.out.println("Wrong iNumber");
+                    howMany = prefix + LIONU;
+                    break;
                 }
             } else {
-                // liardy
-                switch (iNumber) {
-                case 0:
-                    howMany = "";
-                    break;
-                case 1:
-                    howMany = prefix + LIARD;
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    howMany = prefix + LIARDY;
-                    break;
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                    howMany = prefix + LIARD;
-                    break;
-                default:
-                    System.out.println("Wrong iNumber");
+                // lióny – milión, bilióny, triliónov
+                if ((iRow % 2) == 0) {
+                    switch (iNumber) {
+                    case 0:
+                        howMany = "";
+                        break;
+                    case 1:
+                        howMany = prefix + LION;
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        howMany = prefix + LIONY;
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        howMany = prefix + LIONU;
+                        break;
+                    default:
+                        System.out.println("Wrong iNumber");
+
+                    }
+                } else {
+                    // liardy
+                    switch (iNumber) {
+                    case 0:
+                        howMany = "";
+                        break;
+                    case 1:
+                        howMany = prefix + LIARD;
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        howMany = prefix + LIARDY;
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        howMany = prefix + LIARD;
+                        break;
+                    default:
+                        System.out.println("Wrong iNumber");
+                    }
                 }
             }
         }
@@ -513,13 +535,14 @@ public class Number2Word {
             // číslovky tisíc, milión, miliarda ... píšeme s medzerami pred a za
             howMany = " " + howMany + " ";
         }
+
         return howMany;
-    } // end ofrows2Word
+    }// end ofrows2Word
 
     /**
      * Funkcia, ktorá vyskloňuje celé - 0-1 celá; 2-4 celé; 5... celých
      */
-    public static String inflectInteger(int iNumber) {
+    private static String inflectInteger(int iNumber) {
         String result = "";
         switch (iNumber) {
         case 0:
@@ -539,7 +562,10 @@ public class Number2Word {
             result = CELYCH;
             break;
         default:
-            System.out.println("Wrong iNumber");
+            //TODO
+            //System.out.println("Wrong iNumber");
+            result = CELYCH;
+            break;
         }
         return result;
     }
@@ -547,7 +573,7 @@ public class Number2Word {
     /**
      * Funkcia, ktorá vyskloňuje desatiny - max. milióntiny
      */
-    public static String inflectTenths(int iNumber, int iRowTenth) {
+    private static String inflectTenths(int iNumber, int iRowTenth) {
         String result = "";
         switch (iRowTenth) {
         case 1:
@@ -600,7 +626,7 @@ public class Number2Word {
     /**
      * REM Funkcia, ktorá vyskloňuje eurá - 1 euro; 2-4 eurá; 0, 5... eur
      */
-    public static String inflectEuros(int iNumber) {
+    private static String inflectEuros(int iNumber) {
         String result = "";
         switch (iNumber) {
         case 1:
@@ -617,10 +643,13 @@ public class Number2Word {
         case 8:
         case 9:
         case 0:
-            result = EURO;
+            result = EUR;
             break;
         default:
-            System.out.println("Wrong iNumber");
+            //TODO
+            //System.out.println("Wrong iNumber");
+            result = EUR;
+            break;
 
         }
 
@@ -630,7 +659,7 @@ public class Number2Word {
     /**
      * REM Funkcia, ktorá vyskloňuje centy - 1 cent; 2-4 centy; 0, 5... centov
      */
-    public static String inflectCents(int iNumber) {
+    private static String inflectCents(int iNumber) {
         String result = "";
         switch (iNumber) {
         case 1:
@@ -650,7 +679,10 @@ public class Number2Word {
             result = CENTU;
             break;
         default:
-            System.out.println("Wrong iNumber");
+            //TODO
+            //System.out.println("Wrong iNumber");
+            result = CENTU;
+            break;
         }
         return result;
     }
@@ -658,13 +690,13 @@ public class Number2Word {
     /**
      * REM Funkcia pre prevod čísla na slovo so skloňovaním
      */
-    public static String convert2Word(int iNumber, int iWords, boolean financial, int iCurrency, int iRowTenths) {
+    private static String convert2Word(int iNumber, boolean capitalLetter, boolean financial, Currency iCurrency, int iRowTenths) {
         String result = "";
         String currency = "";
 
-        int iAnalysis = 0;
-        int iRow = 0;
-
+        int iAnalysis = 0; //Prevádzaná časť čísla na slovo
+        int iRow = 0; //iRad: 1 – tisíc, 2 – milion, 3 – miliarda...
+        //TODO changed position of this
         int iInflectNumber = iNumber;
 
         if (iNumber == 0) {
@@ -675,9 +707,11 @@ public class Number2Word {
                 iAnalysis = iNumber % 1000;
                 result = hundreds2Word(iAnalysis, iRow, financial) + result;
                 iNumber = (int) Math.floor(iNumber / 1000);
+                
                 if (iNumber != 0) {
                     iRow = iRow + 1;
                     result = rows2Word(iNumber % 1000, iRow, financial) + result;
+                    
                 }
             } while (iNumber != 0);
         }
@@ -720,14 +754,15 @@ public class Number2Word {
         // (skloňujeme dvě, dva)
         // ' pět celých/korun/eur, pět haléřů/centů/...in
 
+        
         if (iRowTenths == 0) {
             // Číslo bolo celá časť
             switch (iCurrency) {
             // TODO currency to enum
-            case 0: // no currency
+            case NO_CURRENCY: // no currency
                 currency = "";
                 break;
-            case 1: // integer cele
+            case INTEGER: // integer cele
                 currency = inflectInteger(iInflectNumber);
                 switch (iInflectNumber) {
                 case 1:
@@ -739,7 +774,7 @@ public class Number2Word {
                 default: // TODO
                 }
                 break;
-            case 2: // euro
+            case EUROS: // euro
                 currency = inflectEuros(iInflectNumber);
                 switch (iInflectNumber) {
                 case 1:
@@ -752,7 +787,7 @@ public class Number2Word {
 
                 }
                 break;
-            default: // crowns
+            case CROWNS: // crowns
                 currency = inflectCrown(iInflectNumber);
                 switch (iInflectNumber) {
                 case 1:
@@ -763,16 +798,17 @@ public class Number2Word {
                     break;
                 default: // TODO
                 }
+                break;
             }
         } else { // if (iRowTenths == 0) {
             // tenth, non integer
             // Číslo bolo desatinná časť
             switch (iCurrency) {
             // TODO currency to enum
-            case 0: // no currency
+            case NO_CURRENCY: // no currency
                 currency = "";
                 break;
-            case 1: // ...iny
+            case INTEGER: // ...iny
                 currency = inflectTenths(iInflectNumber, iRowTenths);
                 switch (iInflectNumber) {
                 case 1:
@@ -784,7 +820,7 @@ public class Number2Word {
                 default: // TODO
 
                 }
-            case 2: // centy
+            case EUROS: // centy
                 currency = inflectCents(iInflectNumber);
                 switch (iInflectNumber) {
                 case 1:
@@ -795,7 +831,7 @@ public class Number2Word {
                     break;
                 default: // TODO
                 }
-            default: // hellers
+            case CROWNS: // hellers
                 currency = inflectHeller(iInflectNumber);
                 switch (iInflectNumber) {
                 case 1:
@@ -806,10 +842,11 @@ public class Number2Word {
                     break;
                 default: // TODO
                 }
+                break;
             }
         }
 
-        if (iWords > 0) {
+        if (capitalLetter) {
             //capitalize 1st letter
             result = result.substring(0, 1).toUpperCase() + result.substring(1);
 
@@ -820,132 +857,75 @@ public class Number2Word {
     }
 
     /**
-     * REM Funkcia na prevod čísla na české slovo
-     * REM Parametre OPTIONAL nie sú povinné, ak však niektorý z nich chce niekto zadať, musí zadať aj predchádzajúce (nasledujúce nie).
-     * REM Napr. ak chce niekto zadať parameter iSpolu, musí zadať aj predchádzajúce parametre iTyp a iPismeno, nasledujúci parameter iMena zadať nemusí.
-     */
-
-    public static String number2CzechWord(String number, int iType, int iLetter, boolean financial, int currency) {
+     * REM Funkcia na prevod čísla na české slovo <br />
+     * REM Parametre OPTIONAL nie sú povinné, ak však niektorý z nich chce niekto zadať, musí zadať aj predchádzajúce (nasledujúce nie).<br />
+     * REM Napr. ak chce niekto zadať parameter iSpolu, musí zadať aj predchádzajúce parametre iTyp a iPismeno, nasledujúci parameter iMena zadať nemusí.<br />
+     *         
+     *  ' Význam parametrov:<br />
+     ' sCislo$ - prevádzané číslo ako reťazec<br />
+     ' iTyp% - 0 – celé – štandardná hodnota, ak je na vstupe celé číslo<br />
+     '         1 – reálne – štandardná hodnota, ak je na vstupe reálne číslo<br />
+     '         2 - reálne - xx/100<br />
+     '         3 - iba desatinná časť<br />
+     '         4 a viac - iba desatinná časť v tvare xx/100 (ďalšie parametre - iPismeno, iSpolu a iMena nemajú v tomto prípade význam)<br />
+     ' iPismeno% - 0 – prvé písmeno malé – štandardná hodnota<br />
+     '             1 a viac – prvé písmeno veľké<br />
+     ' iSpolu% - 0 – s medzerami – štandardná hodnota (Sto padesát)<br />
+     '           1 – bez medzier (Stopadesát)<br />
+     '           2 - s medzerami finančne (Jednosto padesát)<br />
+     '           3 a viac - bez medzier finančne (Jendostopadesát)<br />
+     ' iMena% - 0 – žiadna – štandardná hodnota<br />
+     '          1 – celých, desetin (slovo desetin sa použije, ak iTyp<>xx/100)<br />
+     '          2 – euro, centy (slovo centy sa použije, ak iTyp<>xx/100)<br />
+     '          3 a viac – koruny, haléře (slovo haléře sa použije, ak iTyp<>xx/100)<br />
+      */
+    public static String number2CzechWord(String number, int iType, boolean capitalLetter, boolean financial, Currency currency) {
         String result = "";
-        /*
-         *  ' Význam parametrov:
-        ' sCislo$ - prevádzané číslo ako reťazec
-        ' iTyp% - 0 – celé – štandardná hodnota, ak je na vstupe celé číslo
-        '         1 – reálne – štandardná hodnota, ak je na vstupe reálne číslo
-        '         2 - reálne - xx/100
-        '         3 - iba desatinná časť
-        '         4 a viac - iba desatinná časť v tvare xx/100 (ďalšie parametre - iPismeno, iSpolu a iMena nemajú v tomto prípade význam)
-        ' iPismeno% - 0 – prvé písmeno malé – štandardná hodnota
-        '             1 a viac – prvé písmeno veľké
-        ' iSpolu% - 0 – s medzerami – štandardná hodnota (Sto padesát)
-        '           1 – bez medzier (Stopadesát)
-        '           2 - s medzerami finančne (Jednosto padesát)
-        '           3 a viac - bez medzier finančne (Jendostopadesát)
-        ' iMena% - 0 – žiadna – štandardná hodnota
-        '          1 – celých, desetin (slovo desetin sa použije, ak iTyp<>xx/100)
-        '          2 – euro, centy (slovo centy sa použije, ak iTyp<>xx/100)
-        '          3 a viac – koruny, haléře (slovo haléře sa použije, ak iTyp<>xx/100)
-         */
 
-        int iRowTenth; //iRadD: 1 - desetin, 2 - stotin, 3 - tisícin... (podľa počtu cifier v desatinnej časti)
+        int lengthOfTenth; //iRadD: 1 - desetin, 2 - stotin, 3 - tisícin... (podľa počtu cifier v desatinnej časti)
         String integer = "";// Pomocná premenná pre prevod celej časti
         String tenth = ""; // Pomocná premenná na prevod desatinnej časti
         // ' Pretože vstupné parametre sú optional, vo funkcii sa používajú vnútorné premenné
         //' ktoré sa nastavia podľa parametrov, ak sú zadané, inak nastavíme štandardné hodnoty
-        int ipType = 0;
 
-        int iInt = 0, iTenth = 0;
+        int iInt, iTenth; // cela a desetina cast cisla
 
-        iRowTenth = integerTenth(number, 0, 0); //TODO Cela_Desatinna(sCislo, iCela, iDesatinna)
-        
+        NumberWrapper nw = Utils.integerTenth(number);
+        //iRowTenth = integerTenth(number, iInt, iTenth);
+        lengthOfTenth = nw.getLengthOfTenth();
+        iInt = nw.getInteger();
+        iTenth = nw.getTenth();
 
-        if (iRowTenth > 0)
+        if (lengthOfTenth > 0)
             iType = 1; //Je to reálne číslo (nenulový počet desatinných cifier)
-        if (iRowTenth == 0)
-            iRowTenth = 1; //Ak bolo zadané celé číslo, musíme zadať, že je jedno desatinné číslo (nula) pre prípad, že budeme prevádzať desatinnú časť
+        if (lengthOfTenth == 0)
+            lengthOfTenth = 1; //Ak bolo zadané celé číslo, musíme zadať, že je jedno desatinné číslo (nula) pre prípad, že budeme prevádzať desatinnú časť
 
         //Ak sú parametre zadané, nastavíme vnútorné premenné podľa nich
 
-        switch (ipType) {
+        switch (iType) {
         case 0:
-            integer = convert2Word(iInt, iLetter, financial, currency, 0);
+            integer = convert2Word(iInt, capitalLetter, financial, currency, 0);
             break;
         case 1:
-            integer = convert2Word(iInt, iLetter, financial, currency, 0);
+            integer = convert2Word(iInt, capitalLetter, financial, currency, 0);
             //Prevod desatinnej časti má význam iba vtedy, ak je zadaná mena
-            if (currency > 0)
-                tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
+            if (currency != Currency.INTEGER)
+                tenth = convert2Word(iTenth, capitalLetter, financial, currency, lengthOfTenth);
             break;
         case 2:
-            integer = convert2Word(iInt, iLetter, financial, currency, 0);
-            tenth = (tenth + String.valueOf(iTenth) + "/" + String.valueOf(10 ^ iRowTenth)).trim();
+            integer = convert2Word(iInt, capitalLetter, financial, currency, 0);
+            tenth = (tenth + String.valueOf(iTenth) + "/" + String.valueOf(Math.pow(10, lengthOfTenth))).trim();
             break;
         case 3:
-            tenth = convert2Word(iTenth, iLetter, financial, currency, iRowTenth);
+            tenth = convert2Word(iTenth, capitalLetter, financial, currency, lengthOfTenth);
+            break;
         default:
-            tenth = (String.valueOf(iTenth) + "/" + String.valueOf(10 ^ iRowTenth)).trim();
+            tenth = (String.valueOf(iTenth) + "/" + String.valueOf(Math.pow(10, lengthOfTenth))).trim();
         }
 
-        result = (result + tenth).trim();
+        result = (integer + tenth).trim();
         return result;
-    }
-
-    /**
-     * REM Funkcia pre zistenie celej a desatinnej časti čísla
-     * REM Funkcia vracia počet cifier desatinnej časti (lebo .5 je 5/10 ale .05 je 5/100)
-     * @param number
-     * @param iInt
-     * @param iTenth
-     * @return
-     */
-    public static int integerTenth(String number, int iInt, int iTenth) {
-        String numbers = "0123456789,.";
-        String result = "";
-        int iResult;
-        char character;
-        int where;
-
-        //Vymazanie všetkých znakov okrem čísla a desatinnej čiarky/bodky z reťazca sumy
-        for (int i = 0; i < number.length(); i++) {
-            //character = lastSubstring(number, i, 0);
-            character = number.charAt(i);
-            if (numbers.indexOf(character) != -1) {
-                result = result + character;
-            }
-        }
-        // ' Vyhľadanie desatinnej čiarky
-        where = result.indexOf(",");
-        if (where == -1)
-            where = result.indexOf(".");
-
-        // ' Predpokladáme, že reťazec je prázdny - vtedy je číslo nula a počet desatinných cifier nulový
-        iInt = 0;
-        iTenth = 0;
-        iResult = 0;
-
-        if (where > 0) {
-            //' Je zadaná desatinná čiarka/bodka - reálne číslo
-            //Celá časť prevedená na číslo
-            if (result.length() != 0)
-                iInt = Integer.valueOf(result.substring(0, where-1));
-            //Zistenie polohy desatinnej časti. Číslo môže byť zadané napr. "3.", vtedy sa bude považovať za celé
-            //where = result.length() - where;
-            //
-            if (where > 0) {
-                //Desatinná časť nie je prázdna
-                //result = result.substring(0, 9);
-                result = result.substring(where -1 , result.length());
-                //trim result to only 9 numbers to fit into integer
-                if (result.length() > 9)
-                    result = result.substring(0, 9);
-                if (result.length() != 0)
-                    iTenth = Integer.parseInt(result);
-                iResult = String.valueOf(iTenth).length();
-            }
-
-        }
-
-        return iResult;
     }
 
 }
