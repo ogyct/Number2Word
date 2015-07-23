@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * This class is a wrapper for a integerTenth method.
+ * @author Dmitry
+ *
+ */
 public class NumberWrapper {
 
     public int getLengthOfTenth() {
