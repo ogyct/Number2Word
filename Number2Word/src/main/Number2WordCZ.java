@@ -32,7 +32,7 @@ public class Number2WordCZ {
     public static final String SESTNACT = "šestnáct";
     public static final String SEDMNACT = "sedmnáct";
     public static final String OSMNACT = "osmnáct";
-    public static final String DEVATNACT = "devatenáct";
+    public static final String DEVATENACT = "devatenáct";
 
     public static final String CET = "cet";
     public static final String PADESAT = "padesát";
@@ -112,7 +112,7 @@ public class Number2WordCZ {
      '          2 – euro, centy (slovo centy sa použije, ak iTyp<>xx/100)<br />
      '          3 a viac – koruny, haléře (slovo haléře sa použije, ak iTyp<>xx/100)<br />
       */
-    public static String number2CzechWord(String number, int iType, boolean capitalLetter, boolean financial, Currency currency) {
+    public static String number2CzechWord(String number, boolean capitalLetter, boolean financial, Currency currency) {
         String result = "";
 
         int lengthOfTenth; //iRadD: 1 - desetin, 2 - stotin, 3 - tisícin... (podľa počtu cifier v desatinnej časti)
@@ -128,7 +128,7 @@ public class Number2WordCZ {
         lengthOfTenth = nw.getLengthOfTenth();
         iInt = nw.getInteger();
         iTenth = nw.getTenth();
-
+        int iType = 0;
         if (lengthOfTenth > 0)
             iType = 1; //Je to reálne číslo (nenulový počet desatinných cifier)
         if (lengthOfTenth == 0)
@@ -138,7 +138,7 @@ public class Number2WordCZ {
 
         switch (iType) {
         case 0:
-            integer = convert2Word(iInt, capitalLetter, financial, currency, 0);
+            integer = convert2Word(iInt, capitalLetter, financial, currency, 0); //Prevod celej časti
             break;
         case 1:
             integer = convert2Word(iInt, capitalLetter, financial, currency, 0);
@@ -168,12 +168,12 @@ public class Number2WordCZ {
      * @param iRow
      * @return
      */
-    private static String OneDigit2Word(int iNumber, int iRow) {
+    private static String oneDigit2Word(int iNumber, int iRow) {
         String word = "";
         switch (iNumber) {
         case 1:
             if (iRow == 0) {
-                word = "jedna";
+                word = JEDNA;
             }
             break;
         case 2:
@@ -256,14 +256,6 @@ public class Number2WordCZ {
         case 4:
             word = HALERE;
             break;
-        case 0:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            word = HALERU;
-            break;
         default:
             word = HALERU;
             break;
@@ -287,14 +279,6 @@ public class Number2WordCZ {
         case 3:
         case 4:
             word = KORUNY;
-            break;
-        case 0:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            word = KORUN;
             break;
         default:
             word = KORUN;
@@ -345,7 +329,7 @@ public class Number2WordCZ {
                 result = OSMNACT;
                 break;
             case 9:
-                result = DEVATNACT;
+                result = DEVATENACT;
                 break;
             default:
                 System.out.println("Wrong digit");
@@ -355,7 +339,7 @@ public class Number2WordCZ {
         case 2:
         case 3:
         case 4:
-            result = OneDigit2Word(iTens, 0) + CET;
+            result = oneDigit2Word(iTens, 0) + CET;
             break;
         case 5:
             result = PADESAT;
@@ -365,13 +349,13 @@ public class Number2WordCZ {
             break;
         case 7:
         case 8:
-            result = OneDigit2Word(iTens, 0) + DESAT;
+            result = oneDigit2Word(iTens, 0) + DESAT;
             break;
         case 9:
             result = DEVADESAT;
             break;
         }
-        units = OneDigit2Word(iUnits, 0);
+        units = oneDigit2Word(iUnits, 0);
 
         if (units != null) {
             // financial means no spaces in czech grammar
@@ -402,18 +386,18 @@ public class Number2WordCZ {
             if (iHundreds == 0) {
                 // celá trojica je číslo 0 až 9 a vtedy sa číslovka 1 a 2
                 // skloňuje podľa rádu
-                result = OneDigit2Word(iUnits, iRow);
+                result = oneDigit2Word(iUnits, iRow);
             } else {
                 // je to zložené číslo a vtedy sa číslovka 1 a 2 neskloňuje
                 // (základný tvar je pre rád 0)
-                result = OneDigit2Word(iUnits, 0);
+                result = oneDigit2Word(iUnits, 0);
             }
         } else {
             // 10-99
             result = tens2Word(iUnits, iTens, financial);
         }
         // teraz k prevedenému dvojcifernému číslu pridáme text o stovkách
-        hundreds_c = OneDigit2Word(iHundreds, 3);
+        hundreds_c = oneDigit2Word(iHundreds, 3);
         switch (iHundreds) {
         case 1:
             // Pri stovkách sa jednosto píše iba finančne
@@ -678,16 +662,9 @@ public class Number2WordCZ {
             case 4:
                 result = result + INY; // dvě desetINY
                 break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 0:
+            default:
                 result = result + IN; // pět desetIN
                 break;
-            default:
-                System.out.println("Wrong iNumber");
             }
         }
         return result;
@@ -707,18 +684,9 @@ public class Number2WordCZ {
         case 4:
             result = EURA;
             break;
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 0:
-            result = EUR;
-            break;
         default:
             result = EUR;
             break;
-
         }
 
         return result;
@@ -738,14 +706,6 @@ public class Number2WordCZ {
         case 4:
             result = CENTY;
             break;
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 0:
-            result = CENTU;
-            break;
         default:
             result = CENTU;
             break;
@@ -764,19 +724,22 @@ public class Number2WordCZ {
         int iRow = 0; //iRad: 1 – tisíc, 2 – milion, 3 – miliarda...
         int iInflectNumber = iNumber;
 
+        //Osobitne musíme ošetriť číslo nula
         if (iNumber == 0) {
             result = NULA;
         } else {
             iRow = 0;
             do {
+                // ' Z čísla vyberieme posledné tri číslice
                 iAnalysis = iNumber % 1000;
+                //ktoré prevedieme na text
                 result = hundreds2Word(iAnalysis, iRow, financial) + result;
-                iNumber = (int) Math.floor(iNumber / 1000);
-                
+                //číslo zmenšíme o už spracovanú časť
+                iNumber = (int) (iNumber / 1000);
+                //a pridáme text rádu, ktorý budeme spracovávať v ďalšom kroku cyklu
                 if (iNumber != 0) {
                     iRow = iRow + 1;
                     result = rows2Word(iNumber % 1000, iRow, financial) + result;
-                    
                 }
             } while (iNumber != 0);
         }
@@ -791,6 +754,7 @@ public class Number2WordCZ {
                 result = JEDNO + result;
             }
             if (iAnalysis == 1 && iRow > 0) {
+                //úprava výsledku pre ostatné rády
                 switch (iRow) {
                 case 1:
                 case 2:
@@ -805,7 +769,6 @@ public class Number2WordCZ {
                 case 9:
                     result = JEDNA + result;
                     break;
-                default: // TODO
                 }
             }
         }
@@ -835,7 +798,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVE;
                     break;
-                default: // TODO
                 }
                 break;
             case EUROS: // euro
@@ -847,8 +809,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVE;
                     break;
-                default: // TODO
-
                 }
                 break;
             case CROWNS: // crowns
@@ -860,7 +820,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVE;
                     break;
-                default: // TODO
                 }
                 break;
             }
@@ -880,7 +839,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVE;
                     break;
-                default: // TODO
 
                 }
             case EUROS: // centy
@@ -892,7 +850,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVA; // dva centy
                     break;
-                default: // TODO
                 }
             case CROWNS: // hellers
                 currency = inflectHeller(iInflectNumber);
@@ -903,7 +860,6 @@ public class Number2WordCZ {
                 case 2:
                     result = DVA; // dva halere
                     break;
-                default: // TODO
                 }
                 break;
             }
@@ -912,7 +868,6 @@ public class Number2WordCZ {
         if (capitalLetter) {
             //capitalize 1st letter
             result = result.substring(0, 1).toUpperCase() + result.substring(1);
-
         }
 
         result = (result + " " + currency).trim();
