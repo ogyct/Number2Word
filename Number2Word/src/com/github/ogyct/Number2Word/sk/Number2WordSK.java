@@ -1,7 +1,8 @@
-package main;
+package com.github.ogyct.Number2Word.sk;
 
-import utils.Currency;
-import utils.Utils;
+import com.github.ogyct.Number2Word.utils.Currency;
+import com.github.ogyct.Number2Word.utils.NumberWrapper;
+import com.github.ogyct.Number2Word.utils.Utils;
 
 /**
  * This class contains methods to convert number to a slovak word
@@ -33,9 +34,6 @@ public class Number2WordSK {
     private static final String OSMNACT = "osemnásť";
     private static final String DEVATENACT = "devätnásť";
 
-    private static final String CET = "cet";
-
-    private static final String DESAT = "desat";
 
     private static final String KORUNA = "koruna";
     private static final String KORUNY = "koruny";
@@ -46,12 +44,9 @@ public class Number2WordSK {
     private static final String HALERE = "haliere";
 
     private static final String STO = "sto";
-    private static final String STE = "stě";
-    private static final String STA = "sta";
     private static final String SET = "stot";
 
     private static final String TISIC = "tisíc";
-    private static final String TISICE = "tisíce";
     private static final String MI = "mi";
     private static final String BI = "bi";
     private static final String TRI_NON_HACEK = "tri";
@@ -139,7 +134,6 @@ public class Number2WordSK {
     private static String tens2Word(int iUnits, int iTens) {
         String result = "";
 
-        String units;
         switch (iTens) {
         case 1:
             switch (iUnits) {
@@ -174,6 +168,7 @@ public class Number2WordSK {
                 result = DEVATENACT;
                 break;
             }
+            break;
         case 2:
         case 3:
         case 4:
@@ -314,11 +309,11 @@ public class Number2WordSK {
             }
         }
 
-        if (financial && iRow == 1) {
+        if (!financial && iRow == 1) {
             //pri tisícoch píšeme medzeru za
             howMany = howMany + " ";
         }
-        if (financial && iRow > 1) {
+        if (!financial && iRow > 1) {
             howMany = " " + howMany + " ";
         }
 
@@ -648,7 +643,7 @@ public class Number2WordSK {
      */
     public static String number2SlovakWord(String number, boolean capitalLetter, boolean financial, Currency currency) {
         String result = "";
-        
+
         int lengthOfTenth; //iRadD: 1 - desetin, 2 - stotin, 3 - tisícin... (podľa počtu cifier v desatinnej časti)
         String integer = "";// Pomocná premenná pre prevod celej časti
         String tenth = ""; // Pomocná premenná na prevod desatinnej časti
@@ -656,7 +651,7 @@ public class Number2WordSK {
         //' ktoré sa nastavia podľa parametrov, ak sú zadané, inak nastavíme štandardné hodnoty
 
         int iInt, iTenth; // cela a desetina cast cisla
-        
+
         NumberWrapper nw = Utils.integerTenth(number);
         //iRowTenth = integerTenth(number, iInt, iTenth);
         lengthOfTenth = nw.getLengthOfTenth();

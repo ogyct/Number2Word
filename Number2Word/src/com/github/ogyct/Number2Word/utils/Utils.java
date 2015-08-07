@@ -1,6 +1,5 @@
-package utils;
+package com.github.ogyct.Number2Word.utils;
 
-import main.NumberWrapper;
 
 /**
  * This class contains methods which are common for both CZ and SK classes

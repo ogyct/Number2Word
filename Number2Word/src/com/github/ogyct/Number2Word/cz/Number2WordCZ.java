@@ -1,93 +1,93 @@
-package main;
+package com.github.ogyct.Number2Word.cz;
 
-import utils.Currency;
-import utils.Utils;
+import com.github.ogyct.Number2Word.utils.Currency;
+import com.github.ogyct.Number2Word.utils.NumberWrapper;
+import com.github.ogyct.Number2Word.utils.Utils;
 
 /**
  * This class contains methods to convert a number into a czech word
- * The only public method here is "public static String number2CzechWord()" which should be called by a user.
+ * The only public method here is "public static String number2CzechWord()" which is to be called from main API class.
  * @author Dmitry
  *
  */
 public class Number2WordCZ {
-    public static final String JEDNO = "jedno";
-    public static final String JEDEN = "jeden";
-    public static final String JEDNA = "jedna";
-    public static final String DVA = "dva";
-    public static final String DVE = "dvě";
-    public static final String TRI_HACEK = "tři";
-    public static final String CTYRI = "čtyři";
-    public static final String PET = "pět";
-    public static final String SEST = "šest";
-    public static final String SEDM = "sedm";
-    public static final String OSM = "osm";
-    public static final String DEVET = "devět";
+    private static final String JEDNO = "jedno";
+    private static final String JEDEN = "jeden";
+    private static final String JEDNA = "jedna";
+    private static final String DVA = "dva";
+    private static final String DVE = "dvě";
+    private static final String TRI_HACEK = "tři";
+    private static final String CTYRI = "čtyři";
+    private static final String PET = "pět";
+    private static final String SEST = "šest";
+    private static final String SEDM = "sedm";
+    private static final String OSM = "osm";
+    private static final String DEVET = "devět";
 
-    public static final String DESET = "deset";
-    public static final String JEDENACT = "jedenáct";
-    public static final String DVANACT = "dvanáct";
-    public static final String TRINACT = "třináct";
-    public static final String CTRNACT = "čtrnáct";
-    public static final String PATNACT = "patnáct";
-    public static final String SESTNACT = "šestnáct";
-    public static final String SEDMNACT = "sedmnáct";
-    public static final String OSMNACT = "osmnáct";
-    public static final String DEVATENACT = "devatenáct";
+    private static final String DESET = "deset";
+    private static final String JEDENACT = "jedenáct";
+    private static final String DVANACT = "dvanáct";
+    private static final String TRINACT = "třináct";
+    private static final String CTRNACT = "čtrnáct";
+    private static final String PATNACT = "patnáct";
+    private static final String SESTNACT = "šestnáct";
+    private static final String SEDMNACT = "sedmnáct";
+    private static final String OSMNACT = "osmnáct";
+    private static final String DEVATENACT = "devatenáct";
 
-    public static final String CET = "cet";
-    public static final String PADESAT = "padesát";
-    public static final String SEDESAT = "šedesát";
-    public static final String DEVADESAT = "devadesát";
-    public static final String DESAT = "desát";
+    private static final String CET = "cet";
+    private static final String PADESAT = "padesát";
+    private static final String SEDESAT = "šedesát";
+    private static final String DEVADESAT = "devadesát";
+    private static final String DESAT = "desát";
 
-    public static final String KORUNA = "koruna";
-    public static final String KORUNY = "koruny";
-    public static final String KORUN = "korun";
+    private static final String KORUNA = "koruna";
+    private static final String KORUNY = "koruny";
+    private static final String KORUN = "korun";
 
-    public static final String HALER = "haléř";
-    public static final String HALERU = "haléřů";
-    public static final String HALERE = "haléře";
+    private static final String HALER = "haléř";
+    private static final String HALERU = "haléřů";
+    private static final String HALERE = "haléře";
 
-    public static final String STO = "sto";
-    public static final String STE = "stě";
-    public static final String STA = "sta";
-    public static final String SET = "set";
+    private static final String STO = "sto";
+    private static final String STE = "stě";
+    private static final String STA = "sta";
+    private static final String SET = "set";
 
-    public static final String TISIC = "tisíc";
-    public static final String TISICE = "tisíce";
-    public static final String MI = "mi";
-    public static final String BI = "bi";
-    public static final String TRI_NON_HACEK = "tri";
-    public static final String KVADRI = "kvadri";
-    public static final String LION = "lión";
-    public static final String LIONY = "lióny";
-    public static final String LIONU = "liónů";
-    public static final String LIARDA = "liarda";
-    public static final String LIARDY = "liardy";
-    public static final String LIARD = "liárd";
+    private static final String TISIC = "tisíc";
+    private static final String TISICE = "tisíce";
+    private static final String MI = "mi";
+    private static final String BI = "bi";
+    private static final String TRI_NON_HACEK = "tri";
+    private static final String KVADRI = "kvadri";
+    private static final String LION = "lion";
+    private static final String LIONY = "liony";
+    private static final String LIONU = "lionů";
+    private static final String LIARDA = "liarda";
+    private static final String LIARDY = "liardy";
+    private static final String LIARD = "liárd";
 
-    public static final String CELA = "celá";
-    public static final String CELE = "celé";
-    public static final String CELYCH = "celých";
+    private static final String CELA = "celá";
+    private static final String CELE = "celé";
+    private static final String CELYCH = "celých";
 
-    public static final String DESETISIC = "desetisíc";
-    public static final String STOTISIC = "stotisíc";
-    public static final String MILIONT = "miliónt";
-    public static final String INA = "ina";
-    public static final String INY = "iny";
-    public static final String IN = "in";
+    private static final String DESETISIC = "desetisíc";
+    private static final String STOTISIC = "stotisíc";
+    private static final String MILIONT = "miliónt";
+    private static final String INA = "ina";
+    private static final String INY = "iny";
+    private static final String IN = "in";
 
-    public static final String EURO = "euro";
-    public static final String EURA = "eura";
-    public static final String EUR = "eur";
+    private static final String EURO = "euro";
+    private static final String EURA = "eura";
+    private static final String EUR = "eur";
 
-    public static final String CENT = "cent";
-    public static final String CENTY = "centy";
-    public static final String CENTU = "centů";
+    private static final String CENT = "cent";
+    private static final String CENTY = "centy";
+    private static final String CENTU = "centů";
 
-    public static final String NULA = "nula";
+    private static final String NULA = "nula";
 
-    public static final String A = "";
     
     /**
      * REM Funkcia na prevod čísla na české slovo <br />
@@ -567,7 +567,7 @@ public class Number2WordCZ {
                         howMany = "";
                         break;
                     case 1:
-                        howMany = prefix + LIARD;
+                        howMany = prefix + LIARDA;
                         break;
                     case 2:
                     case 3:
@@ -749,6 +749,7 @@ public class Number2WordCZ {
 
         // Úprava na finančné číslovky - priadnie slova "jedno", "jeden",
         // "jedna"
+        //TODO
         if (financial) {
             if ((iAnalysis >= 100) && (iAnalysis <= 199)) {
                 result = JEDNO + result;

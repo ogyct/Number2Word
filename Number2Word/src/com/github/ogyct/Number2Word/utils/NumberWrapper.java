@@ -1,4 +1,4 @@
-package main;
+package com.github.ogyct.Number2Word.utils;
 
 /**
  * This class is a wrapper for a integerTenth method.
