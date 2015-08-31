@@ -10,7 +10,12 @@ import com.github.ogyct.Number2Word.utils.Utils;
  * @author Dmitry
  *
  */
-public class Number2WordCZ {
+public final class Number2WordCZ {
+    
+    private Number2WordCZ() {
+        //not to be instantiated
+    }
+
     private static final String JEDNO = "jedno";
     private static final String JEDEN = "jeden";
     private static final String JEDNA = "jedna";
@@ -88,7 +93,6 @@ public class Number2WordCZ {
 
     private static final String NULA = "nula";
 
-    
     /**
      * REM Funkcia na prevod čísla na české slovo <br />
      * REM Parametre OPTIONAL nie sú povinné, ak však niektorý z nich chce niekto zadať, musí zadať aj predchádzajúce (nasledujúce nie).<br />
@@ -783,7 +787,6 @@ public class Number2WordCZ {
         // (skloňujeme dvě, dva)
         // ' pět celých/korun/eur, pět haléřů/centů/...in
 
-        
         if (iRowTenths == 0) {
             // Číslo bolo celá časť
             switch (iCurrency) {
@@ -874,7 +877,5 @@ public class Number2WordCZ {
         result = (result + " " + currency).trim();
         return result;
     }
-
-    
 
 }

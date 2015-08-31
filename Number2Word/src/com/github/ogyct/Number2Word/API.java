@@ -13,8 +13,7 @@ import com.github.ogyct.Number2Word.utils.Language;
  *
  */
 public class API {
-    
-    
+
     /**
      * Use this to convert number to word
      * @param number - number to be converted
@@ -31,14 +30,14 @@ public class API {
             return "";
         }
         if (lang == Language.SK) {
-             result = Number2WordSK.number2SlovakWord(number, firstCapitalLetter, financial, currency);
+            result = Number2WordSK.number2SlovakWord(number, firstCapitalLetter, financial, currency);
         }
         if (lang == Language.CZ) {
             result = Number2WordCZ.number2CzechWord(number, firstCapitalLetter, financial, currency);
         }
         return result;
     }
-    
+
     /**
      * Simplified method to convert number to word without currency, without capital letter, non-financial
      * @param number - number to be converted

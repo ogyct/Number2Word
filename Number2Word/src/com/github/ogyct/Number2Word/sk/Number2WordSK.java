@@ -9,7 +9,12 @@ import com.github.ogyct.Number2Word.utils.Utils;
  * @author avgustisd
  *
  */
-public class Number2WordSK {
+public final class Number2WordSK {
+
+    private Number2WordSK() {
+        //not to be instantiated
+    }
+
     private static final String JEDNO = "jedno";
     private static final String JEDEN = "jeden";
     private static final String JEDNA = "jedna";
@@ -33,7 +38,6 @@ public class Number2WordSK {
     private static final String SEDMNACT = "sedemnásť";
     private static final String OSMNACT = "osemnásť";
     private static final String DEVATENACT = "devätnásť";
-
 
     private static final String KORUNA = "koruna";
     private static final String KORUNY = "koruny";

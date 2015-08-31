@@ -1,13 +1,16 @@
 package com.github.ogyct.Number2Word.utils;
 
-
 /**
  * This class contains methods which are common for both CZ and SK classes
  * @author Dmitry
  *
  */
-public class Utils {
-    
+public final class Utils {
+
+    private Utils() {
+        //not to be instantiated
+    }
+
     /**
      * REM Funkcia pre zistenie celej a desatinnej časti čísla
      * REM Funkcia vracia počet cifier desatinnej časti (lebo .5 je 5/10 ale .05 je 5/100)
@@ -71,7 +74,6 @@ public class Utils {
         nw.setInteger(iInt);
         nw.setTenth(iTenth);
         nw.setLengthOfTenth(lengthOfTenth);
-        
 
         return nw;
     }
